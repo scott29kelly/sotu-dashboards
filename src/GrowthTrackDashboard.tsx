@@ -1,4 +1,3 @@
-import React from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { TrendingUp, Users, Calendar, Activity } from 'lucide-react';
 
@@ -49,13 +48,14 @@ const GrowthTrackDashboard = () => {
     { metric: '75th Percentile', value: '14 services' },
   ];
 
-  // Light mode color palette
-  const categoryColors = {
-    crowd: '#f97316',      // Orange
-    congregation: '#10b981', // Green
-    committed: '#3b82f6',   // Blue
-    core: '#8b5cf6'        // Purple
-  };
+type CategoryKey = 'crowd' | 'congregation' | 'committed' | 'core';
+
+const categoryColors: Record<CategoryKey, string> = {
+  crowd: '#F97316',         // Orange
+  congregation: '#10B981',  // Green
+  committed: '#3B82F6',     // Blue
+  core: '#8B5CF6',          // Purple
+};
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -181,7 +181,10 @@ const GrowthTrackDashboard = () => {
                   dataKey="value"
                 >
                   {currentDistribution.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={categoryColors[entry.name.toLowerCase()]} />
+<Cell
+  key={`cell-${index}`}
+fill={categoryColors[entry.name.toLowerCase() as CategoryKey]}
+/>
                   ))}
                 </Pie>
                 <Tooltip 
@@ -196,7 +199,7 @@ const GrowthTrackDashboard = () => {
                   <div className="flex items-center gap-2">
                     <div 
                       className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: categoryColors[item.name.toLowerCase()] }}
+style={{ backgroundColor: categoryColors[item.name.toLowerCase() as CategoryKey] }}
                     />
                     <span className="text-gray-600">{item.name}</span>
                   </div>
