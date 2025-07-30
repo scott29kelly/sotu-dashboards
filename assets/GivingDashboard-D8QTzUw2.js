@@ -1,1 +1,0 @@
-import{j as s}from"./index-ygQyvHUL.js";function a(){return s.jsxs("div",{className:"p-6",children:[s.jsx("h2",{className:"text-xl font-semibold mb-2",children:"Giving Dashboard"}),s.jsx("p",{children:"Placeholder — paste your giving dashboard here."})]})}export{a as default};
