@@ -1,7 +1,8 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc'; // keep this if your project uses swc
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base: '/sotu-dashboards/',   // <-- replace with the exact repo name you will deploy to
-});
+  base: '/sotu-dashboards/',
+  plugins: [react()], // This line is essential
+})
