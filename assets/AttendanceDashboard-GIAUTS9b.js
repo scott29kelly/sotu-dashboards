@@ -1,1 +1,0 @@
-import{j as e}from"./index-CqsIkhTq.js";function s(){return e.jsxs("div",{className:"p-6",children:[e.jsx("h2",{className:"text-xl font-semibold mb-2",children:"Attendance Dashboard"}),e.jsx("p",{children:"Placeholder — paste your attendance dashboard here."})]})}export{s as default};
