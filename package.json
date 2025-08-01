@@ -9,7 +9,7 @@
   "build": "vite build",
   "preview": "vite preview",
   "deploy": "npm run build && gh-pages -d dist"
-}
+},
   "dependencies": {
     "lodash": "^4.17.21",
     "lucide-react": "^0.532.0",
