@@ -12,14 +12,18 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "lucide-react": "^0.532.0",
+    "papaparse": "^5.5.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^6.25.1",
-    "recharts": "^2.12.7",
+    "recharts": "^2.15.4",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.20",
+    "@types/papaparse": "^5.3.16",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.7.0",

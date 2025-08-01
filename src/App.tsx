@@ -1,12 +1,13 @@
 import { Routes, Route, Link, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import { BarChart3, Users, DollarSign, Globe, ChevronRight } from 'lucide-react';
+import { BarChart3, Users, DollarSign, Globe, ClipboardList, ChevronRight } from 'lucide-react'; // Added ClipboardList icon
 
 // Lazy-load each dashboard (fast first load)
 const GrowthTrackDashboard = lazy(() => import('./GrowthTrackDashboard'));
 const AttendanceDashboard  = lazy(() => import('./AttendanceDashboard'));
-const FinancialPerformanceDashboard = lazy(() => import('./FinancialPerformanceDashboard')); // UPDATED NAME
+const FinancialPerformanceDashboard = lazy(() => import('./FinancialPerformanceDashboard'));
 const DigitalPresenceDashboard = lazy(() => import('./DigitalPresenceDashboard'));
+const SmallGroupsDashboard = lazy(() => import('./SmallGroupsDashboard')); // NEW DASHBOARD IMPORT
 
 // Reusable card component for the homepage links
 function CardLink({ to, title, desc, Icon }: { to: string; title: string; desc: string; Icon: React.ComponentType<{ className?: string }>}) {
@@ -40,7 +41,7 @@ function Home() {
           </p>
         </header>
 
-        <section className="grid gap-4 sm:grid-cols-2">
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <CardLink
             to="/growth-track"
             title="Spiritual Demographics"
@@ -48,8 +49,8 @@ function Home() {
             Icon={BarChart3}
           />
           <CardLink
-            to="/financial-performance" // UPDATED LINK
-            title="Financial Performance" // UPDATED TITLE
+            to="/financial-performance"
+            title="Financial Performance"
             desc="Giving trends, participation, and momentum."
             Icon={DollarSign}
           />
@@ -58,6 +59,12 @@ function Home() {
             title="Digital Presence"
             desc="Website, social media, and email engagement."
             Icon={Globe}
+          />
+           <CardLink
+            to="/small-groups" // NEW LINK
+            title="Small Groups" // NEW TITLE
+            desc="Engagement and health of small groups."
+            Icon={ClipboardList} // NEW ICON
           />
            <CardLink
             to="/attendance"
@@ -78,8 +85,9 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/growth-track" element={<GrowthTrackDashboard />} />
         <Route path="/attendance"   element={<AttendanceDashboard  />} />
-        <Route path="/financial-performance" element={<FinancialPerformanceDashboard />} /> {/* UPDATED ROUTE */}
+        <Route path="/financial-performance" element={<FinancialPerformanceDashboard />} />
         <Route path="/digital-presence" element={<DigitalPresenceDashboard />} />
+        <Route path="/small-groups" element={<SmallGroupsDashboard />} /> {/* NEW ROUTE */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

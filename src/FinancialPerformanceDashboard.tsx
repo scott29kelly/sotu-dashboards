@@ -116,6 +116,17 @@ const BucksChurchDashboard = () => {
         </h1>
         <p className="text-gray-600 mt-2">Financial Analysis (2022 - 2025 YTD)</p>
         <p className="text-sm text-gray-500 mt-1">Data through July 25, 2025 • P&L and Offering Analysis • Updated Monthly</p>
+
+        {/* Download Report Button */}
+        <div className="mt-4">
+          <a
+            href="/sotu-dashboards/reports/sotu-financial-performance-report.pdf"
+            download
+            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
+          >
+            Download Full Report (PDF)
+          </a>
+        </div>
       </div>
 
       <div className="grid grid-cols-5 gap-4 mb-8">
@@ -170,16 +181,12 @@ const BucksChurchDashboard = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="month" />
               <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} />
-              <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+              <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
               <Area type="monotone" dataKey="total" fill={COLORS.secondary} fillOpacity={0.6} stroke={COLORS.secondary} name="Monthly Giving" />
               <Line type="monotone" dataKey="movingAvg" stroke={COLORS.primary} strokeWidth={3} dot={false} name="3-Month Average" />
               <Legend />
             </ComposedChart>
           </ResponsiveContainer>
-          <p className="text-sm text-gray-600 mt-3">
-            December shows exceptional growth at <span className="font-semibold">${reportData.december2024.toLocaleString()}</span>, 
-            representing {reportData.decemberImpact}% of the monthly average.
-          </p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6">
@@ -191,16 +198,12 @@ const BucksChurchDashboard = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="month" />
               <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} />
-              <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+              <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
               <Area type="monotone" dataKey="cashCheck" stackId="1" fill={COLORS.secondary} name="Cash/Check" />
               <Area type="monotone" dataKey="electronic" stackId="1" fill={COLORS.success} name="Electronic" />
               <Legend />
             </AreaChart>
           </ResponsiveContainer>
-          <p className="text-sm text-gray-600 mt-3">
-            Electronic giving increased from <span className="font-semibold">{reportData.electronic2024}%</span> to <span className="font-semibold">{reportData.electronicPercent}%</span>, 
-            showing strong digital adoption growth.
-          </p>
         </div>
       </div>
 
@@ -214,16 +217,13 @@ const BucksChurchDashboard = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="year" />
               <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} />
-              <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
+              <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
               <Bar dataKey="General Fund" fill={COLORS.primary} />
               <Bar dataKey="Total Expenses" fill={COLORS.secondary} />
               <Bar dataKey="Net Income" fill={COLORS.success} />
               <Legend />
             </BarChart>
           </ResponsiveContainer>
-          <p className="text-sm text-gray-600 mt-3">
-            3-year CAGR of <span className="font-semibold">7.8%</span> significantly outpaces industry average of 3-5%.
-          </p>
         </div>
 
         <div className="bg-white rounded-lg shadow-sm p-6">
@@ -235,7 +235,7 @@ const BucksChurchDashboard = () => {
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="month" />
               <YAxis tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => `${value}%`} />
+              <Tooltip formatter={(value: number) => `${value}%`} />
               <Bar dataKey="percentage">
                 {seasonalityData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.month === 'Dec' ? COLORS.secondary : COLORS.primary} />
@@ -244,198 +244,9 @@ const BucksChurchDashboard = () => {
               <ReferenceLine y={100} stroke={COLORS.neutral} strokeDasharray="3 3" />
             </BarChart>
           </ResponsiveContainer>
-          <p className="text-sm text-gray-600 mt-3">
-            February and June consistently show below-average giving, presenting opportunities for targeted campaigns.
-          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">🍩 Current Channel Mix (2025 YTD)</h3>
-          <ResponsiveContainer width="100%" height={180}>
-            <PieChart>
-              <Pie
-                data={channelMixData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey="value"
-              >
-                {channelMixData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip formatter={(value) => `${value}%`} />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="mt-4 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded" style={{backgroundColor: COLORS.success}}></div>
-                <span className="text-sm">Electronic</span>
-              </span>
-              <span className="font-semibold">{reportData.electronicPercent}%</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded" style={{backgroundColor: COLORS.secondary}}></div>
-                <span className="text-sm">Cash/Check</span>
-              </span>
-              <span className="font-semibold">{(100 - reportData.electronicPercent).toFixed(1)}%</span>
-            </div>
-          </div>
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <p className="text-sm text-gray-600">
-              Target: <span className="font-semibold">45%</span> electronic by year-end
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">📊 YTD Giving Comparison</h3>
-          <p className="text-sm text-gray-600 mb-3">General Fund Income (Jan 1 - July 25 each year)</p>
-          <ResponsiveContainer width="100%" height={180}>
-            <BarChart data={ytdComparisonData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="year" />
-              <YAxis tickFormatter={(value) => `${(value / 1000).toFixed(0)}k`} />
-              <Tooltip formatter={(value) => `${value.toLocaleString()}`} />
-              <Bar dataKey="amount">
-                {ytdComparisonData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.year === '2025' ? COLORS.success : COLORS.primary} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <p className="text-sm text-gray-600">
-              2025 YTD vs 2024 YTD: <span className="font-semibold text-green-600">+{reportData.yoyGrowth}%</span>
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">🎯 Annual Growth Rate vs Industry</h3>
-          <p className="text-sm text-gray-600 mb-3">Year-over-Year General Fund Growth %</p>
-          <ResponsiveContainer width="100%" height={200}>
-            <LineChart data={growthRateData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="year" />
-              <YAxis tickFormatter={(value) => `${value}%`} />
-              <Tooltip formatter={(value) => `${value}%`} />
-              <Line type="monotone" dataKey="growth" stroke={COLORS.primary} strokeWidth={3} name="Bucks Church" />
-              <Line type="monotone" dataKey="industry" stroke={COLORS.neutral} strokeWidth={2} strokeDasharray="5 5" name="Church Industry Avg" />
-              <Legend />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="mt-4 pt-4 border-t border-gray-200">
-            <p className="text-sm text-gray-600">
-              Growing at <span className="font-semibold">2X church industry average</span> (4% benchmark)
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Metrics (2025 YTD)</h3>
-        <p className="text-sm text-gray-600 mb-4">Based on financial data through July 25, 2025</p>
-        <div className="grid grid-cols-4 gap-4">
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <p className="text-gray-600 text-sm mb-2">Average Weekly Giving</p>
-            <p className="text-2xl font-bold text-gray-900">${reportData.avgWeeklyGiving.toLocaleString()}</p>
-            <p className="text-xs text-gray-500 mt-1">Based on 29 weeks through July 25</p>
-          </div>
-          
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <p className="text-gray-600 text-sm mb-2">Electronic Adoption Rate</p>
-            <p className="text-2xl font-bold text-gray-900">{reportData.electronicPercent}%</p>
-            <p className="text-xs text-gray-500 mt-1">Up from {reportData.electronic2024}% in 2024</p>
-          </div>
-          
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <p className="text-gray-600 text-sm mb-2">Expense Ratio</p>
-            <p className="text-2xl font-bold text-gray-900">{reportData.expenseRatio}%</p>
-            <p className="text-xs text-gray-500 mt-1">Lowest in 3 years</p>
-          </div>
-          
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <p className="text-gray-600 text-sm mb-2">Projected Annual</p>
-            <p className="text-2xl font-bold text-gray-900">${reportData.projectedAnnual.toLocaleString()}</p>
-            <p className="text-xs text-gray-500 mt-1">Based on current run rate</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">💡 Key Strategic Insights</h3>
-        <div className="grid grid-cols-2 gap-6">
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-2">Strengths</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>Growing at 2X industry average with 7.8% CAGR</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>Electronic giving accelerating (+5.9 percentage points)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>Strong operating margin at 27.4%</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-green-500 mt-0.5">✓</span>
-                <span>Mortgage eliminated (Nov 2024), freeing $72k annually</span>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-2">Opportunities</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start gap-2">
-                <span className="text-blue-500 mt-0.5">→</span>
-                <span>Push electronic giving to 45% target</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-500 mt-0.5">→</span>
-                <span>Address February/June giving lows</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-500 mt-0.5">→</span>
-                <span>Leverage December giving momentum</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-blue-500 mt-0.5">→</span>
-                <span>Plan facility expansion for growth</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-8 text-center text-sm text-gray-500">
-        <p>Data sources: P&L Statements, QuickBooks Reports, and Offering Records</p>
-        <p className="mt-1">Operating income of $142,459 reflects strong performance before $500k facility investment</p>
-        
-        <div className="mt-4 flex justify-center gap-6 text-xs">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded" style={{backgroundColor: COLORS.primary}}></div>
-            <span>Primary Metrics</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded" style={{backgroundColor: COLORS.success}}></div>
-            <span>Electronic/Growth</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded" style={{backgroundColor: COLORS.secondary}}></div>
-            <span>Cash/Expenses</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -115,15 +115,18 @@ const BucksChurchDashboard = () => {
         <p className="text-base md:text-lg text-gray-600">
           Multi-Channel Performance Analysis (Dec 2024 - Jul 2025) • Church Center Year 1
         </p>
-        <p className="text-xs md:text-sm text-gray-500 mt-1">
-          Data through Jetpack, Social Media APIs, Email Analytics • Updated: July 31, 2025
-        </p>
-        <div className="mt-4 bg-blue-50 rounded-lg p-3 max-w-3xl mx-auto">
-          <p className="text-sm text-blue-800">
-            <strong>How to use this dashboard:</strong> This shows how many people we're reaching across all our digital platforms.
-            Higher percentages mean more people are engaging with our content. Use these insights to plan when to post and what content works best.
-          </p>
+
+        {/* --- PASTE THE BUTTON CODE HERE --- */}
+        <div className="mt-4">
+          <a 
+            href="/sotu-dashboards/reports/sotu-digital-presence-report.pdf" 
+            download
+            className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors"
+          >
+            Download Full Report (PDF)
+          </a>
         </div>
+
       </div>
 
       {/* KPI Cards */}
