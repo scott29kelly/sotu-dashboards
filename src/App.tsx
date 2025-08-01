@@ -1,42 +1,87 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Handshake, Users } from 'lucide-react';
+import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { BarChart3, Users, DollarSign, Globe, ChevronRight } from 'lucide-react';
 
-// Import BOTH of your dashboards
-import GrowthTrackDashboard from './GrowthTrackDashboard';
-import BucksChurchUnifiedDashboard from './GivingDashboard';
+// Lazy-load each dashboard (fast first load)
+const GrowthTrackDashboard = lazy(() => import('./GrowthTrackDashboard'));
+const AttendanceDashboard  = lazy(() => import('./AttendanceDashboard'));
+const FinancialPerformanceDashboard = lazy(() => import('./FinancialPerformanceDashboard')); // UPDATED NAME
+const DigitalPresenceDashboard = lazy(() => import('./DigitalPresenceDashboard'));
 
-// Custom Button Component from your original file
-const DashboardButton = ({ icon: Icon, title, to }: { icon: React.ComponentType<any>, title: string, to: string }) => (
-  <Link to={to} className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow flex flex-col items-center justify-center text-center">
-    <Icon className="h-10 w-10 text-indigo-600 mb-3" />
-    <span className="font-semibold text-gray-800">{title}</span>
-  </Link>
-);
-
-// This is your original HomePage layout with the buttons
-const HomePage = () => (
-  <div className="min-h-screen bg-gray-50 flex flex-col items-center p-8">
-    <h1 className="text-4xl font-bold text-gray-900 mb-2">State of the Union Meeting</h1>
-    <p className="text-lg text-gray-600 mb-10">Select a dashboard to view key metrics.</p>
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl">
-      <DashboardButton icon={LayoutDashboard} title="Spiritual Demographics" to="/growth-track" />
-      <DashboardButton icon={Wallet} title="Giving" to="/giving" />
-      <DashboardButton icon={Handshake} title="Serving" to="#" />
-      <DashboardButton icon={Users} title="Groups" to="#" />
-    </div>
-  </div>
-);
-
-// This sets up all the routes correctly
-function App() {
+// Reusable card component for the homepage links
+function CardLink({ to, title, desc, Icon }: { to: string; title: string; desc: string; Icon: React.ComponentType<{ className?: string }>}) {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/growth-track" element={<GrowthTrackDashboard />} />
-      <Route path="/giving" element={<BucksChurchUnifiedDashboard />} />
-    </Routes>
+    <Link
+      to={to}
+      className="group relative rounded-2xl border border-slate-200 bg-white/70 backdrop-blur px-6 py-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
+    >
+      <div className="flex items-center gap-4">
+        <div className="rounded-xl p-2 bg-slate-100 shrink-0">
+          <Icon className="h-5 w-5 text-slate-700" />
+        </div>
+        <div>
+          <div className="font-medium">{title}</div>
+          <div className="text-sm text-slate-500 truncate">{desc}</div>
+        </div>
+        <ChevronRight className="ml-auto h-4 w-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
+      </div>
+    </Link>
   );
 }
 
-export default App;
+function Home() {
+  return (
+    <div className="relative min-h-screen bg-gradient-to-b from-slate-50 to-white">
+      <main className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <header className="mb-8 text-center">
+          <h1 className="text-3xl font-semibold tracking-tight">SOTU Dashboards</h1>
+          <p className="mt-2 text-slate-600">
+            Choose a dashboard to view key metrics for the 2025 State of the Union report.
+          </p>
+        </header>
+
+        <section className="grid gap-4 sm:grid-cols-2">
+          <CardLink
+            to="/growth-track"
+            title="Spiritual Demographics"
+            desc="Progression through the Growth Track phases."
+            Icon={BarChart3}
+          />
+          <CardLink
+            to="/financial-performance" // UPDATED LINK
+            title="Financial Performance" // UPDATED TITLE
+            desc="Giving trends, participation, and momentum."
+            Icon={DollarSign}
+          />
+          <CardLink
+            to="/digital-presence"
+            title="Digital Presence"
+            desc="Website, social media, and email engagement."
+            Icon={Globe}
+          />
+           <CardLink
+            to="/attendance"
+            title="Attendance"
+            desc="Placeholder for attendance metrics."
+            Icon={Users}
+          />
+        </section>
+      </main>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Suspense fallback={<div className="p-6 text-center">Loading Dashboard…</div>}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/growth-track" element={<GrowthTrackDashboard />} />
+        <Route path="/attendance"   element={<AttendanceDashboard  />} />
+        <Route path="/financial-performance" element={<FinancialPerformanceDashboard />} /> {/* UPDATED ROUTE */}
+        <Route path="/digital-presence" element={<DigitalPresenceDashboard />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
+  );
+}
